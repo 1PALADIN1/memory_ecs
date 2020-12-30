@@ -10,6 +10,9 @@ namespace Game.ECS.Features
             //init
             Add(new CreateGridSystem(contexts));
             
+            //logic
+            Add(new SelectCardSystem(contexts));
+            
             //clean up
             Add(new DestroyEntitySystem(contexts));
         }
