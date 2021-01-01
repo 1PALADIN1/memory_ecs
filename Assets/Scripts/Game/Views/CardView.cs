@@ -22,6 +22,7 @@ namespace Game.Views
 
         public int Id { get; private set; }
         public int TypeId { get; private set; }
+        public bool IsOpened { get; private set; }
 
         public void Init(int id, int typeId)
         {
@@ -31,11 +32,13 @@ namespace Game.Views
 
         public void Open()
         {
+            IsOpened = true;
             PlaySequence(_closeImage, _openImage);
         }
 
         public void Close()
         {
+            IsOpened = false;
             PlaySequence(_openImage, _closeImage);
         }
 

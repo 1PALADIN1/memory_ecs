@@ -24,8 +24,18 @@ namespace Game.ECS.Systems
         {
             foreach (var entity in entities)
             {
+                var cardView = entity.cardView.value;
+                
                 if (entity.openedCard.value)
-                    entity.cardView.value.Open();
+                {
+                    if (!cardView.IsOpened)
+                        cardView.Open();
+                    
+                    continue;
+                }
+                
+                if (cardView.IsOpened)
+                    cardView.Close();
             }
         }
     }
