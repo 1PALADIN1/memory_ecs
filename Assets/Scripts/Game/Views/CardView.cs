@@ -21,10 +21,12 @@ namespace Game.Views
         private Contexts _contexts;
 
         public int Id { get; private set; }
+        public int TypeId { get; private set; }
 
-        public void Init(int id)
+        public void Init(int id, int typeId)
         {
             Id = id;
+            TypeId = typeId;
         }
 
         public void Open()
@@ -90,17 +92,7 @@ namespace Game.Views
         private void OnCardClick()
         {
             var clickEntity = _contexts.game.CreateEntity();
-            clickEntity.AddSelectCard(Id);
-        }
-
-        //TODO: debug
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.O))
-                Open();
-            
-            if (Input.GetKeyDown(KeyCode.P))
-                Close();
+            clickEntity.AddSelectCard(Id, TypeId);
         }
     }
 }

@@ -13,6 +13,9 @@ namespace Game.ECS.Features
             //logic
             Add(new SelectCardSystem(contexts));
             
+            //render
+            Add(new CardViewSystem(contexts));
+            
             //clean up
             Add(new DestroyEntitySystem(contexts));
         }

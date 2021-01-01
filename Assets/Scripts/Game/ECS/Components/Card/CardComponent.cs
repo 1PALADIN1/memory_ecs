@@ -6,5 +6,6 @@ namespace Game.ECS.Components
     public sealed class CardComponent : IComponent
     {
         public int id;
+        public int typeId;
     }
 }

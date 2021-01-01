@@ -1,22 +1,27 @@
 using System.Collections.Generic;
+using System.Linq;
 using Entitas;
-using UnityEngine;
 
 namespace Game.ECS.Systems
 {
     public sealed class SelectCardSystem : ReactiveSystem<GameEntity>
     {
-        private const int InitId = -1;
+        private const int InitTypeId = -1;
 
-        private SelectedCards _selectedCards;
+        private readonly IGroup<GameEntity> _cardsGroup;
         
+        private SelectedCards _selectedCards;
+
         public SelectCardSystem(Contexts contexts) : base(contexts.game)
         {
             _selectedCards = new SelectedCards
             {
-                FirstCardId = InitId,
-                SecondCardId = InitId
+                FirstCardTypeId = InitTypeId,
+                SecondCardTypeId = InitTypeId
             };
+
+            _cardsGroup = contexts.game.GetGroup(
+                GameMatcher.AllOf(GameMatcher.Card, GameMatcher.OpenedCard));
         }
 
         protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
@@ -33,29 +38,42 @@ namespace Game.ECS.Systems
         {
             foreach (var entity in entities)
             {
-                Debug.Log($"Selected: {entity.selectCard.id}");
-                TryAddCard(entity.selectCard.id);
+                TrySelectCard(entity.selectCard.id, entity.selectCard.typeId);
                 entity.isDestroyEntity = true;
             }
         }
-
-         private void TryAddCard(int id)
+        
+        private void TrySelectCard(int id, int typeId)
         {
             //open first card
-            if (_selectedCards.FirstCardId == InitId)
+            if (_selectedCards.FirstCardTypeId == InitTypeId)
             {
-                _selectedCards.FirstCardId = id;
+                OpenCard(id, typeId);
+                _selectedCards.FirstCardTypeId = typeId;
                 return;
             }
             
             //open second card
-            _selectedCards.SecondCardId = id;
+            if (_selectedCards.SecondCardTypeId == InitTypeId)
+            {
+                _selectedCards.SecondCardTypeId = typeId;
+                OpenCard(id, typeId);
+            }
+        }
+
+        private void OpenCard(int id, int typeId)
+        {
+            foreach (var cardEntity in _cardsGroup.GetEntities()
+                .Where(c => c.card.id == id && c.card.typeId == typeId))
+            {
+                cardEntity.ReplaceOpenedCard(true);
+            }
         }
         
         private struct SelectedCards
         {
-            public int FirstCardId { get; set; }
-            public int SecondCardId { get; set; }
+            public int FirstCardTypeId { get; set; }
+            public int SecondCardTypeId { get; set; }
         }
     }
 }

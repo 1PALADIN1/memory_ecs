@@ -24,21 +24,27 @@ namespace Game.ECS.Systems.Grid
 
             var cardLibrary = _contexts.game.cardLibrary.value;
             var cardPrefabs = cardLibrary.CardPrefabs;
+
+            var id = 0;
             for (int i = 0; i < CardsAmount; i++)
             {
-                CreateCardEntity(cardPrefabs[i], i);
-                CreateCardEntity(cardPrefabs[i], i);
+                CreateCardEntity(cardPrefabs[i], i, id);
+                id++;
+                
+                CreateCardEntity(cardPrefabs[i], i, id);
+                id++;
             }
         }
 
-        private void CreateCardEntity(CardView cardPrefab, int id)
+        private void CreateCardEntity(CardView cardPrefab, int typeId, int id)
         {
             var cardView = GameObject.Instantiate(cardPrefab, _contexts.game.cardRoot.value);
-            cardView.Init(id);
+            cardView.Init(id, typeId);
             
             var cardEntity = _contexts.game.CreateEntity();
             cardEntity.AddCardView(cardView);
-            cardEntity.AddCard(id);
+            cardEntity.AddCard(id, typeId);
+            cardEntity.AddOpenedCard(false);
         }
     }
 }
