@@ -12,6 +12,7 @@ namespace Game.ECS.Features
             
             //logic
             Add(new SelectCardSystem(contexts));
+            Add(new DelayedActionSystem(contexts));
             
             //render
             Add(new CardViewSystem(contexts));
