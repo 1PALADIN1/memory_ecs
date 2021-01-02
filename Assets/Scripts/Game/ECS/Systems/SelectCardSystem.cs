@@ -61,7 +61,7 @@ namespace Game.ECS.Systems
                 _selectedCards.SecondCardId = id;
                 _selectedCards.SecondCardTypeId = typeId;
 
-                _contexts.game.CreateEntity().AddDelayedAction(1f,
+                _contexts.game.CreateEntity().AddDelayedAction(0.6f,
                     () =>
                     {
                         if (IsCardTypesMatch)

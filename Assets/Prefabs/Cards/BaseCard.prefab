@@ -214,7 +214,7 @@ MonoBehaviour:
   _openImage: {fileID: 6986185168570762770}
   _closeImage: {fileID: 6986185167290969559}
   _clickButton: {fileID: 5408759979123136837}
-  _totalAnimationTime: 1
+  _totalAnimationTime: 0.6
   _scale: {x: 1.05, y: 1.05, z: 1}
 --- !u!114 &5408759979123136837
 MonoBehaviour:
