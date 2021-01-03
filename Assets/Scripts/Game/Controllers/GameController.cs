@@ -1,6 +1,9 @@
+using System;
 using Game.ECS.Features;
 using Game.SO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Game.Controllers
 {
@@ -8,6 +11,7 @@ namespace Game.Controllers
     {
         [SerializeField] private Transform _cardRoot;
         [SerializeField] private CardLibrary _cardLibrary;
+        [SerializeField] private Button _restartButton;
         
         private GameFeature _gameFeature;
         private Contexts _contexts;
@@ -21,6 +25,17 @@ namespace Game.Controllers
             CreateCardRootEntity();
 
             _gameFeature.Initialize();
+            
+            _restartButton
+                .onClick
+                .AddListener(RestartLevel);
+        }
+
+        private void OnDestroy()
+        {
+            _restartButton
+                .onClick
+                .RemoveListener(RestartLevel);
         }
 
         private void Update()
@@ -38,6 +53,19 @@ namespace Game.Controllers
         {
             var cardRootEntity = _contexts.game.CreateEntity();
             cardRootEntity.AddCardRoot(_cardRoot);
+        }
+
+        private void RestartLevel()
+        {
+            foreach (var context in _contexts.allContexts)
+            {
+                context.DestroyAllEntities();
+                context.ClearComponentPools();
+            }
+            
+            _gameFeature.ClearReactiveSystems();
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }

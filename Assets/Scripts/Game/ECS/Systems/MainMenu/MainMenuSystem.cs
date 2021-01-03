@@ -30,9 +30,6 @@ namespace Game.ECS.Systems.MainMenu
                     case MenuItemType.Play:
                         SceneManager.LoadScene("GameScene");
                         break;
-                    case MenuItemType.Exit:
-                        //TODO
-                        break;
                 }
                 
                 entity.isDestroyEntity = true;
