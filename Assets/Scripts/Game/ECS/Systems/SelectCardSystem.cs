@@ -48,7 +48,9 @@ namespace Game.ECS.Systems
             //open first card
             if (_selectedCards.FirstCardTypeId == InitId)
             {
-                ChangeCardState(id, true);
+                if (!TryChangeCardState(id, true))
+                    return;
+                
                 _selectedCards.FirstCardId = id;
                 _selectedCards.FirstCardTypeId = typeId;
                 return;
@@ -57,7 +59,9 @@ namespace Game.ECS.Systems
             //open second card
             if (_selectedCards.SecondCardTypeId == InitId)
             {
-                ChangeCardState(id, true);
+                if (!TryChangeCardState(id, true))
+                    return;
+                
                 _selectedCards.SecondCardId = id;
                 _selectedCards.SecondCardTypeId = typeId;
 
@@ -70,21 +74,27 @@ namespace Game.ECS.Systems
                             return;
                         }
                         
-                        ChangeCardState(_selectedCards.FirstCardId, false);
-                        ChangeCardState(_selectedCards.SecondCardId, false);
+                        TryChangeCardState(_selectedCards.FirstCardId, false);
+                        TryChangeCardState(_selectedCards.SecondCardId, false);
                     
                         _contexts.game.CreateEntity().AddDelayedAction(0.5f, ResetSelectedCards);
                     });
             }
         }
 
-        private void ChangeCardState(int id, bool isOpened)
+        private bool TryChangeCardState(int id, bool isOpened)
         {
             foreach (var cardEntity in _cardsGroup.GetEntities()
                 .Where(c => c.card.id == id))
             {
+                if (cardEntity.openedCard.value == isOpened)
+                    continue;
+                
                 cardEntity.ReplaceOpenedCard(isOpened);
+                return true;
             }
+
+            return false;
         }
         
         private void ResetSelectedCards()
