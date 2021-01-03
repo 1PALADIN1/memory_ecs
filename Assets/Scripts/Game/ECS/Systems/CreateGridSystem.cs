@@ -1,12 +1,14 @@
+using System.Collections.Generic;
+using System.Linq;
 using Entitas;
 using Game.Views;
 using UnityEngine;
 
-namespace Game.ECS.Systems.Grid
+namespace Game.ECS.Systems
 {
     public sealed class CreateGridSystem : IInitializeSystem
     {
-        private const int CardsAmount = 3;
+        private const int CardsAmount = 9;
         private const int Rows = 2;
         private const int Columns = 3;
 
@@ -24,16 +26,44 @@ namespace Game.ECS.Systems.Grid
 
             var cardLibrary = _contexts.game.cardLibrary.value;
             var cardPrefabs = cardLibrary.CardPrefabs;
+            var cardsList = new List<Card>();
 
             var id = 0;
             for (int i = 0; i < CardsAmount; i++)
             {
-                CreateCardEntity(cardPrefabs[i], i, id);
+                cardsList.Add(new Card
+                {
+                    Id = id,
+                    TypeId = i,
+                    CardPrefab = cardPrefabs[i]
+                });
+
                 id++;
                 
-                CreateCardEntity(cardPrefabs[i], i, id);
+                cardsList.Add(new Card
+                {
+                    Id = id,
+                    TypeId = i,
+                    CardPrefab = cardPrefabs[i]
+                });
+
                 id++;
             }
+
+            var iterations = cardsList.Count;
+            for (int i = 0; i < iterations; i++)
+            {
+                var randIndex = cardsList.Count == 1 ? 0
+                    : Random.Range(0, cardsList.Count);
+                CreateCardEntity(cardsList[randIndex]);
+                
+                cardsList.RemoveAt(randIndex);
+            }
+        }
+
+        private void CreateCardEntity(Card card)
+        {
+            CreateCardEntity(card.CardPrefab, card.TypeId, card.Id);
         }
 
         private void CreateCardEntity(CardView cardPrefab, int typeId, int id)
@@ -45,6 +75,13 @@ namespace Game.ECS.Systems.Grid
             cardEntity.AddCardView(cardView);
             cardEntity.AddCard(id, typeId);
             cardEntity.AddOpenedCard(false);
+        }
+
+        private struct Card
+        {
+            public int Id { get; set; }
+            public int TypeId { get; set; }
+            public CardView CardPrefab { get; set; }
         }
     }
 }

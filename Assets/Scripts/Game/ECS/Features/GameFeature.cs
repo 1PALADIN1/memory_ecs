@@ -1,5 +1,4 @@
 using Game.ECS.Systems;
-using Game.ECS.Systems.Grid;
 
 namespace Game.ECS.Features
 {
