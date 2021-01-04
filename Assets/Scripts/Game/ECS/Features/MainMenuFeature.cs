@@ -7,9 +7,6 @@ namespace Game.ECS.Features
     {
         public MainMenuFeature(Contexts contexts)
         {
-            //init
-            Add(new SettingsInitSystem(contexts));
-            
             //render
             Add(new MainMenuSystem(contexts));
             
