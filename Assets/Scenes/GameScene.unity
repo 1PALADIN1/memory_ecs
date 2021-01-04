@@ -257,6 +257,7 @@ MonoBehaviour:
   _cardRoot: {fileID: 649448752}
   _cardLibrary: {fileID: 11400000, guid: af73934e6c0b94b929090db5b2bcd5c9, type: 2}
   _globalEvents: {fileID: 11400000, guid: 6e991020006db4e228cc0ad2783a0817, type: 2}
+  _gameSettings: {fileID: 11400000, guid: 9fe4a2e1982e741c584ac106b308405d, type: 2}
 --- !u!4 &490381759
 Transform:
   m_ObjectHideFlags: 0

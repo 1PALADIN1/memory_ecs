@@ -10,6 +10,7 @@ namespace Game.Controllers
         [SerializeField] private Transform _cardRoot;
         [SerializeField] private CardLibrary _cardLibrary;
         [SerializeField] private GlobalEvents _globalEvents;
+        [SerializeField] private GameSettings _gameSettings;
 
         private GameFeature _gameFeature;
         private Contexts _contexts;
@@ -24,6 +25,7 @@ namespace Game.Controllers
             CreateCardLibraryEntity();
             CreateCardRootEntity();
             CreateGlobalEventsEntity();
+            CreateGameSettingsEntity();
 
             _gameFeature.Initialize();
             
@@ -65,6 +67,12 @@ namespace Game.Controllers
         {
             var entity = _contexts.game.CreateEntity();
             entity.AddGlobalEvents(_globalEvents);
+        }
+
+        private void CreateGameSettingsEntity()
+        {
+            var entity = _contexts.game.CreateEntity();
+            entity.AddGameSettings(_gameSettings);
         }
 
         private void NeedRestartLevel()

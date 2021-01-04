@@ -9,6 +9,7 @@ namespace Game.ECS.Features
         {
             //init
             Add(new CreateGridSystem(contexts));
+            Add(new SettingsInitSystem(contexts));
             
             //logic
             Add(new SelectCardSystem(contexts));
