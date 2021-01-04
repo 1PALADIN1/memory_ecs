@@ -256,7 +256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardRoot: {fileID: 649448752}
   _cardLibrary: {fileID: 11400000, guid: af73934e6c0b94b929090db5b2bcd5c9, type: 2}
-  _restartButton: {fileID: 1847969940}
+  _globalEvents: {fileID: 11400000, guid: 6e991020006db4e228cc0ad2783a0817, type: 2}
 --- !u!4 &490381759
 Transform:
   m_ObjectHideFlags: 0

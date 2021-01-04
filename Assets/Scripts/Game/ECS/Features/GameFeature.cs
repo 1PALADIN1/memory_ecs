@@ -1,4 +1,5 @@
 using Game.ECS.Systems;
+using Game.ECS.Systems.Menu;
 
 namespace Game.ECS.Features
 {
@@ -15,6 +16,7 @@ namespace Game.ECS.Features
             
             //render
             Add(new CardViewSystem(contexts));
+            Add(new GameMenuSystem(contexts));
             
             //clean up
             Add(new DestroyEntitySystem(contexts));

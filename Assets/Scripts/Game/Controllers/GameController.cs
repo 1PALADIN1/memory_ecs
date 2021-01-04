@@ -1,9 +1,7 @@
-using System;
 using Game.ECS.Features;
 using Game.SO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace Game.Controllers
 {
@@ -11,31 +9,30 @@ namespace Game.Controllers
     {
         [SerializeField] private Transform _cardRoot;
         [SerializeField] private CardLibrary _cardLibrary;
-        [SerializeField] private Button _restartButton;
-        
+        [SerializeField] private GlobalEvents _globalEvents;
+
         private GameFeature _gameFeature;
         private Contexts _contexts;
+        private bool _needRestartLevel;
 
         private void Awake()
         {
             _contexts = Contexts.sharedInstance;
             _gameFeature = new GameFeature(_contexts);
+            _needRestartLevel = false;
             
             CreateCardLibraryEntity();
             CreateCardRootEntity();
+            CreateGlobalEventsEntity();
 
             _gameFeature.Initialize();
             
-            _restartButton
-                .onClick
-                .AddListener(RestartLevel);
+            _globalEvents.RestartLevelCalled += NeedRestartLevel;
         }
 
         private void OnDestroy()
         {
-            _restartButton
-                .onClick
-                .RemoveListener(RestartLevel);
+            _globalEvents.RestartLevelCalled -= NeedRestartLevel;
         }
 
         private void Update()
@@ -43,16 +40,36 @@ namespace Game.Controllers
             _gameFeature.Execute();
         }
 
+        private void LateUpdate()
+        {
+            if (!_needRestartLevel)
+                return;
+
+            RestartLevel();
+            _needRestartLevel = true;
+        }
+
         private void CreateCardLibraryEntity()
         {
-            var cardLibraryEntity = _contexts.game.CreateEntity();
-            cardLibraryEntity.AddCardLibrary(_cardLibrary);
+            var entity = _contexts.game.CreateEntity();
+            entity.AddCardLibrary(_cardLibrary);
         }
 
         private void CreateCardRootEntity()
         {
-            var cardRootEntity = _contexts.game.CreateEntity();
-            cardRootEntity.AddCardRoot(_cardRoot);
+            var entity = _contexts.game.CreateEntity();
+            entity.AddCardRoot(_cardRoot);
+        }
+
+        private void CreateGlobalEventsEntity()
+        {
+            var entity = _contexts.game.CreateEntity();
+            entity.AddGlobalEvents(_globalEvents);
+        }
+
+        private void NeedRestartLevel()
+        {
+            _needRestartLevel = true;
         }
 
         private void RestartLevel()

@@ -1,5 +1,5 @@
 using Game.ECS.Systems;
-using Game.ECS.Systems.MainMenu;
+using Game.ECS.Systems.Menu;
 
 namespace Game.ECS.Features
 {

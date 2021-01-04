@@ -3,7 +3,7 @@ using Entitas;
 using Game.ECS.Components.MainMenu;
 using UnityEngine.SceneManagement;
 
-namespace Game.ECS.Systems.MainMenu
+namespace Game.ECS.Systems.Menu
 {
     public sealed class MainMenuSystem : ReactiveSystem<GameEntity>
     {
